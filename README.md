@@ -1,5 +1,11 @@
 # MAC Spoofer para macOS (equivalente a TMAC)
 
+## Descarga
+
+Descarga el DMG desde la [página de Releases](https://github.com/soymorerag/macspoofer-macos/releases/latest):
+
+- `MACSpoofer.dmg` — arrastra `MACSpoofer.app` a `/Applications`.
+
 App macOS que replica las funciones principales de **Technitium MAC Address Changer (TMAC)** para Windows:
 cambiar (spoof) la dirección MAC de adaptadores de red (wired/Wi-Fi), generar MAC aleatoria,
 restaurar la MAC original y (opcional) hacer el cambio persistente tras reinicios.
