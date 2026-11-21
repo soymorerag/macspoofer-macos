@@ -6,7 +6,7 @@ on run
     -- Obtener lista de interfaces con nombre amigable
     set parsed to ""
     try
-        set parsed to do shell script "/usr/sbin/networksetup -listallhardwareports | awk '/^Hardware Port:/{name=substr($0,index($0,\"\":\")+2)} /^Device:/{print name \"  [\" $2 \"]\"}'"
+        set parsed to do shell script "/usr/sbin/networksetup -listallhardwareports | awk '/^Hardware Port:/{name=substr($0,index($0,\":\")+2)} /^Device:/{print name \"  [\" $2 \"]\"}'"
     on error errMsg
         display alert "Error" message "No se pudo obtener la lista de interfaces: " & errMsg
         return
