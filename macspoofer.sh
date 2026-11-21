@@ -55,7 +55,7 @@ case "$cmd" in
     dev="${2:?falta interfaz, ej. en0}"
     spec="${3:-random}"
     if [ "$spec" = "random" ]; then
-      mac=$(/usr/bin/python3 -c "import random; print('02:'+':'.join('%02x'%random.randint(0,255) for _ in range(5)))")
+      mac="02:$(/usr/bin/openssl rand -hex 5 | /usr/bin/sed 's/../&:/g; s/:$//')"
     else
       mac="$spec"
     fi

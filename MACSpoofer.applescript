@@ -6,26 +6,7 @@ on run
     -- Obtener lista de interfaces con nombre amigable
     set parsed to ""
     try
-        set parsed to do shell script "/usr/bin/python3 - <<'PY'
-import subprocess
-out = subprocess.check_output(['/usr/sbin/networksetup','-listallhardwareports']).decode(errors='replace')
-lines = out.splitlines()
-res = []
-i = 0
-n = len(lines)
-while i < n:
-    if lines[i].startswith('Hardware Port:'):
-        name = lines[i].split(':',1)[1].strip()
-        dev = ''
-        if i+1 < n and lines[i+1].startswith('Device:'):
-            dev = lines[i+1].split(':',1)[1].strip()
-        if dev:
-            res.append(name + '  [' + dev + ']')
-        i += 3
-    else:
-        i += 1
-print('\\n'.join(res))
-PY"
+        set parsed to do shell script "/usr/sbin/networksetup -listallhardwareports | awk '/^Hardware Port:/{name=substr($0,index($0,\"\":\")+2)} /^Device:/{print name \"  [\" $2 \"]\"}'"
     on error errMsg
         display alert "Error" message "No se pudo obtener la lista de interfaces: " & errMsg
         return
@@ -91,7 +72,7 @@ PY"
 
     if actionStr is "Cambiar MAC (aleatoria)" then
         -- generar MAC aleatoria con primer octeto 02 (localmente administrada, mejor compatibilidad WiFi)
-        set newMac to do shell script "/usr/bin/python3 -c \"import random; print('02:'+':'.join('%02x'%random.randint(0,255) for _ in range(5)))\""
+        set newMac to do shell script "echo \"02:$(/usr/bin/openssl rand -hex 5 | /usr/bin/sed 's/../&:/g; s/:$//')\""
     else if actionStr is "Cambiar MAC (manual)" then
         set dlg to display dialog "Ingresa la nueva MAC address (formato xx:xx:xx:xx:xx:xx):" default answer "" with title "MAC manual"
         set newMac to text returned of dlg
